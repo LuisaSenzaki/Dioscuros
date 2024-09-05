@@ -1,11 +1,135 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dioscuros</title>
 </head>
 <body>
-    <p>Socorro</p>
+    <h1>Gerador de Master Prompt</h1>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- PRIMEIRA PÁGINA-->
+    <form id="meuFormulario" action="/submit" method="POST">
+        <div class="container" id="tela1">
+            <h2>SOBRE VOCÊ...</h2>
+            <div>
+                <p>Como você quer ser chamado?</p>
+                <input type="text" name="q1" id="q1" placeholder="Ex.: Ana Maria" autofocus required>
+            </div>
+            <div>
+                <p>Qual é a sua idade?</p>
+                <input type="text" name="q2" id="q2" placeholder="Ex.: Tenho 21 anos" required>
+            </div>
+            <div>
+                <p>Qual é a sua formação acadêmica?</p>
+                <input type="text" name="q3" id="q3" placeholder="Ex.: Sou formada em Ciência e Tecnologia." required>
+            </div>
+            <div>
+                <p>Descreva brevemente sua experiência profissional:</p>
+                <input type="text" name="q4" id="q4" placeholder="Ex.: Tenho 10 anos de experiência na área de Análise de dados, tendo trabalhado em bancos e projetos na área de engenharia da informação." required>
+            </div>
+            <div>
+                <p>Quais são seus hobbies e interesses fora do trabalho?</p>
+                <input type="text" name="q5" id="q5" placeholder="Ex.: Gosto de ler livros de romance e pratico esportes como futebol" required>
+            </div>
+            <!-- BOTÃO DE AVANÇAR -->
+            <div class="button-container">
+                <button type="button" onclick="validateAndNext(1)">AVANÇAR</button>
+            </div>
+        </div>
+    
+        <!-- Tela 2 -->
+        <div class="container hidden" id="tela2">
+            <h2>Perfil Profissional...</h2>
+            <div>
+                <p>Quais são suas principais habilidades e competências profissionais?</p>
+                <input type="text" name="q6" id="q6" placeholder="Ex.: Tenho habilidades em gestão de projetos e análise de dados" required autofocus>
+            </div>
+            <div>
+                <p>Quais são suas principais habilidades e competências profissionais?</p>
+                <input type="text" name="q6" id="q6" placeholder="Ex.: Tenho habilidades em gestão de projetos e análise de dados ">
+            </div>
+            <div>
+                <p>Quais são suas principais habilidades e competências profissionais?</p>
+                <input type="text" name="q6" id="q6" placeholder="Ex.: Tenho habilidades em gestão de projetos e análise de dados ">
+            </div>
+            <div>
+                <p>Quais são suas principais habilidades e competências profissionais?</p>
+                <input type="text" name="q6" id="q6" placeholder="Ex.: Tenho habilidades em gestão de projetos e análise de dados ">
+            </div>
+            <div>
+                <p>Quais são suas principais habilidades e competências profissionais?</p>
+                <input type="text" name="q6" id="q6" placeholder="Ex.: Tenho habilidades em gestão de projetos e análise de dados ">
+            </div>
+            <div>
+                <p>Quais são suas principais habilidades e competências profissionais?</p>
+                <input type="text" name="q6" id="q6" placeholder="Ex.: Tenho habilidades em gestão de projetos e análise de dados ">
+            </div>
+            <div>
+                <p>Quais são suas principais habilidades e competências profissionais?</p>
+                <input type="text" name="q6" id="q6" placeholder="Ex.: Tenho habilidades em gestão de projetos e análise de dados ">
+            </div>
+            <!-- BOTÕES DE VOLTAR E AVANÇAR-->
+            <div class="button-container">
+                <button type="button" onclick="prevDiv(2)">VOLTAR</button>
+                <button type="button" onclick="validateAndNext(2)">AVANÇAR</button>
+            </div>
+        </div>
+    
+        <!-- Tela 3 -->
+        <div class="container hidden" id="tela3">
+            <h2>DESAFIOS E METAS...</h2>
+            <!-- Adicionar aqui as 9 perguntas da terceira tela -->
+            <!-- Exemplo de pergunta -->
+            <div>
+                <p>Qual foi o maior desafio que você enfrentou até agora?</p>
+                <input type="text" name="q13" id="q13" placeholder="Descreva o maior desafio que enfrentou.">
+            </div>
+            <!-- Demais perguntas -->
+            <div class="button-container">
+                <button type="button" onclick="prevDiv(3)">VOLTAR</button>
+                <button type="submit" onclick="validateForm(event)">GERAR MASTER PROMPT</button>
+            </div>
+        </div>
+    </form>
+
+    <!--Navegação entre telas: O botão de avançar chama a função nextDiv(), que recebe o número da tela atual como parâmetro. Essa função esconde a tela atual e exibe a próxima.-->
+    <script>
+        // Função para avançar entre as telas, validando campos da tela atual
+        function validateAndNext(currentTela) {
+            const currentScreen = document.getElementById('tela' + currentTela);
+            const inputs = currentScreen.querySelectorAll('input[required]');
+
+            // Verifica se todos os campos obrigatórios da tela atual estão preenchidos
+            for (let input of inputs) {
+                if (!input.checkValidity()) {
+                    input.reportValidity(); // Mostra o aviso de campo obrigatório se faltar algo
+                    return;
+                }
+            }
+
+            // Se todos os campos estiverem preenchidos, avança para a próxima tela
+            document.getElementById('tela' + currentTela).classList.add('hidden');
+            document.getElementById('tela' + (currentTela + 1)).classList.remove('hidden');
+        }
+
+        // Função para voltar entre as telas
+        function prevDiv(currentTela) {
+            document.getElementById('tela' + currentTela).classList.add('hidden');
+            document.getElementById('tela' + (currentTela - 1)).classList.remove('hidden');
+        }
+
+        // Função para validar o formulário completo antes de enviar
+        function validateForm(event) {
+            const form = document.getElementById('meuFormulario');
+            if (!form.checkValidity()) {
+                event.preventDefault(); // Impede o envio do formulário se houver campos inválidos
+                alert('Por favor, preencha todos os campos obrigatórios antes de finalizar.');
+            }
+        }
+    </script>
 </body>
 </html>
